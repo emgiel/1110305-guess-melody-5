@@ -9,6 +9,17 @@ class GenreQuestionScreen extends PureComponent {
     this.state = {
       userAnswers: [false, false, false, false]
     };
+
+    // this._onChangeHandler = this._onChangeHandler.bind(this);
+  }
+
+  _onChangeHandler(i, evt) {
+    const value = evt.target.checked;
+    const {userAnswers} = this.state;
+
+    this.setState({
+      userAnswers: [...userAnswers.slice(0, i), value, ...userAnswers.slice(i + 1)],
+    });
   }
 
   render() {
@@ -46,7 +57,7 @@ class GenreQuestionScreen extends PureComponent {
           >
 
             {question.answers.map((answer, i) => (
-              <div key={`${i}-${answer.genre}`} className="track">
+              <div key={answer.id} className="track">
                 <button className="track__button track__button--play" type="button"></button>
                 <div className="track__status">
                   <audio src={answer.src}></audio>
@@ -56,13 +67,7 @@ class GenreQuestionScreen extends PureComponent {
                     value={`answer-${i}`}
                     id={`answer-${i}`}
                     checked={userAnswers[i]}
-                    onChange={(evt) => {
-                      const value = evt.target.checked;
-
-                      this.setState({
-                        userAnswers: [...userAnswers.slice(0, i), value, ...userAnswers.slice(i + 1)],
-                      });
-                    }}
+                    onChange={this._onChangeHandler.bind(this, i)}
                   />
                   <label className="game__check" htmlFor={`answer-${i}`}>Отметить</label>
                 </div>
@@ -83,6 +88,7 @@ GenreQuestionScreen.propTypes = {
     answers: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string.isRequired,
       genre: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     })).isRequired,
     genre: PropTypes.string.isRequired,
     type: PropTypes.oneOf([GameType.ARTIST, GameType.GENRE]).isRequired,

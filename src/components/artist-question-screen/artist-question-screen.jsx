@@ -39,7 +39,7 @@ const ArtistQuestionScreen = (props) => {
         <form className="game__artist">
 
           {question.answers.map((answer, i) => (
-            <div key={answer.artist} className="artist">
+            <div key={answer.id} className="artist">
               <input className="artist__input visually-hidden" type="radio" name="answer"
                 value={`artist-${i}`}
                 id={`answer-${i}`}
@@ -67,6 +67,7 @@ ArtistQuestionScreen.propTypes = {
     answers: PropTypes.arrayOf(PropTypes.shape({
       artist: PropTypes.string.isRequired,
       picture: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     })).isRequired,
     song: PropTypes.shape({
       artist: PropTypes.string.isRequired,
